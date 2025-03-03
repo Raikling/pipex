@@ -101,7 +101,7 @@ int main(int ac, char **av, char **env) {
         exit(EXIT_FAILURE);
     }
 
-    ft_cleanup(&pipex); // Close all descriptors and free memory
+    ft_cleanup(&pipex); 
     waitpid(pipex.pid1, NULL, 0);
     waitpid(pipex.pid2, NULL, 0);
     return (EXIT_SUCCESS);

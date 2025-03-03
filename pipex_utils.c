@@ -49,8 +49,11 @@ int ft_check_args(t_pipex *pipex, char *file1, char *file2)
 
 char ***ft_parse_args(char *cmd1, char *cmd2)
 {
-    char ***args = malloc(3 * sizeof(char **));
-    if (!args) return (NULL);
+    char ***args;
+    
+    args = malloc(3 * sizeof(char **));
+    if (!args)
+        return (NULL);
 
     args[0] = ft_split(cmd1, ' ');
     if (!args[0])
@@ -73,6 +76,9 @@ char ***ft_parse_args(char *cmd1, char *cmd2)
 
 char **ft_parse_cmds(char *cmd1, char *cmd2, char **env) {
     char **paths = malloc(3 * sizeof(char *));
+    
+    
+    
     if (!paths) return (NULL);
     paths[0] = NULL;
     paths[1] = NULL;
@@ -83,17 +89,31 @@ char **ft_parse_cmds(char *cmd1, char *cmd2, char **env) {
         return (NULL);
     }
     int i = 0;
-    while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0) i++;
-    if (!env[i]) { free(paths); return (NULL); }
+    while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
+        i++;
+    if (!env[i]) 
+    {
+        free(paths);
+        return (NULL);
+    }
     char **dirs = ft_split(env[i] + 5, ':');
+
+
     char *space1 = ft_strchr(cmd1, ' ');
     char *cmd1_base;
-    if (space1) cmd1_base = ft_substr(cmd1, 0, space1 - cmd1);
-    else cmd1_base = ft_strdup(cmd1);
+    if (space1)
+        cmd1_base = ft_substr(cmd1, 0, space1 - cmd1);
+    else 
+        cmd1_base = ft_strdup(cmd1);
     char *space2 = ft_strchr(cmd2, ' ');
     char *cmd2_base;
-    if (space2) cmd2_base = ft_substr(cmd2, 0, space2 - cmd2);
-    else cmd2_base = ft_strdup(cmd2);
+    if (space2)
+        cmd2_base = ft_substr(cmd2, 0, space2 - cmd2);
+    else 
+        cmd2_base = ft_strdup(cmd2);
+
+
+
     i = 0;
     while (dirs[i] && !paths[0]) {
         char *tmp = ft_strjoin(dirs[i++], "/");
