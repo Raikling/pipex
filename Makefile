@@ -1,4 +1,4 @@
-SRCS = pipex.c pipex_utils.c
+SRCS = pipex.c pipex_utils.c pipex_utils_2.c
 OBJ = $(SRCS:.c=.o) 
 NAME = pipex
 CC = gcc
