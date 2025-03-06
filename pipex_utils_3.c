@@ -1,79 +1,102 @@
 #include "pipex.h"
 
-void check_param(int ac)
+char ***ft_parse_args(char *cmd1, char *cmd2)
 {
-   if ( ac != 5)
-   {
-      ft_putstr_fd("Wrong number of Args\n", 1);
-      exit(EXIT_FAILURE);
-   }
+    char ***args;
+    
+    args = malloc(3 * sizeof(char **));
+    if (!args)
+        return (NULL);
 
-}
-void free_string_array(char **arr)
-{
-   if (arr)
-   {
-      int i;
-
-      i = 0;
-      while (arr[i])
-      {
-         free(arr[i]);
-         i++;
-      }
-      free(arr);
-   }
-}
-void free_2d_array(char ***arr, int size)
-{
-   if (arr)
-   {
-      int i;
-
-      i = 0;
-      while (i < size)
-      {
-         free_string_array(arr[i]);
-         i++;
-      }
-      free(arr);
-   }
-}
-
-void exe_child1(t_pipex *pipex, char **env)
-{
-    if (pipex->pid1 == -1)
+    args[0] = ft_split(cmd1, ' ');
+    if (!args[0])
     {
-        perror("Fork 1");
-        ft_cleanup(pipex);
-        exit(EXIT_FAILURE);
+        free(args);
+        return (NULL);
     }
-    close(pipex->pipefds[0]);
-    dup2(pipex->fd_in, STDIN_FILENO);
-    dup2(pipex->pipefds[1], STDOUT_FILENO);
-    close(pipex->fd_in);
-    close(pipex->pipefds[1]);
-    execve(pipex->cmd_paths[0],pipex->cmd_args[0], env);
-    perror("Execve cmd 1");
-    exit(EXIT_FAILURE);
-
+    args[1] = ft_split(cmd2, ' ');
+    if (!args[1])
+    {
+        free_string_array(args[0]);
+        free(args);
+        return (NULL);
+    }
+    args[2] = NULL;
+    return (args);
 }
 
-void exe_child2(t_pipex *pipex, char **env)
+char *get_command_base(char *cmd)
 {
-    if (pipex->pid2 == -1)
-    {
-        perror("Fork 2");
-        ft_cleanup(pipex);
-        exit(EXIT_FAILURE);
-    }
-    close(pipex->pipefds[1]);
-    dup2(pipex->pipefds[0], STDIN_FILENO);
-    dup2(pipex->fd_out, STDOUT_FILENO);
-    close(pipex->fd_out);
-    close(pipex->pipefds[0]);
-    execve(pipex->cmd_paths[1],pipex->cmd_args[1], env);
-    perror("Execve cmd 2");
-    exit(EXIT_FAILURE);
+    char *space;
 
+    space = ft_strchr(cmd, ' ');
+    if (space)
+        return (ft_substr(cmd, 0, space - cmd));
+    else
+        return (ft_strdup(cmd));
+}
+
+char *get_exe_path(char **dirs, char *cmd_base)
+{
+    int i;
+    char *path;
+    char *tmp;
+
+    i = 0;
+    path = NULL;
+    while (dirs[i] && !path)
+    {
+        tmp = ft_strjoin(dirs[i++], "/");
+        path = ft_strjoin(tmp, cmd_base);
+        free(tmp);
+        if (path && access(path, X_OK) == 0)
+            return (path);
+        free(path);
+        path = NULL;
+    }
+    if (!path)
+        return (ft_strdup(cmd_base));
+    return (path);
+}
+
+void set_command_paths(char **paths, char *cmd1, char *cmd2, char **env)
+{
+    int i;
+    char **dirs;
+    char *cmd1_base;
+    char *cmd2_base;
+    
+    i = 0;
+    while (env[i] && ft_strncmp(env[i], "PATH=", 5))
+        i++;
+    if (!env[i])
+        return ;
+    dirs = ft_split(env[i] + 5, ':');
+    cmd1_base = get_command_base(cmd1);
+    cmd2_base = get_command_base(cmd2);
+    paths[0] = get_exe_path(dirs, cmd1_base);
+    paths[1] = get_exe_path(dirs, cmd2_base);
+    free_string_array(dirs);
+    free(cmd1_base);
+    free(cmd2_base);
+}
+
+char **ft_parse_cmds(char *cmd1, char *cmd2, char **env) 
+{
+    char **paths;
+
+    paths= malloc(3 * sizeof(char *));
+    if (!paths || !env) 
+    {
+        free(paths);
+        return (NULL);
+    }
+    paths[2] = NULL;
+    set_command_paths(paths, cmd1, cmd2, env);
+    if (!paths[0] || !paths[1])
+    { 
+        free_string_array(paths);
+        return (NULL);
+    }
+    return (paths);
 }
