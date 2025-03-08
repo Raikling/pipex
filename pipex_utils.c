@@ -35,7 +35,7 @@ int ft_check_args(t_pipex *pipex, char *file1, char *file2)
         perror("open infile");
         return (-1);
     }
-    pipex->fd_out = open(file2, O_WRONLY);
+    pipex->fd_out = open(file2, O_WRONLY | O_CREAT | O_APPEND, 0644);
     if (pipex->fd_out == -1)
     {
         perror("open outfile");

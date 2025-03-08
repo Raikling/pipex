@@ -36,12 +36,43 @@ char *get_command_base(char *cmd)
         return (ft_strdup(cmd));
 }
 
+// char *get_exe_path(char **dirs, char *cmd_base)
+// {
+//     int i;
+//     char *path;
+//     char *tmp;
+
+//     i = 0;
+//     path = NULL;
+//     while (dirs[i] && !path)
+//     {
+//         tmp = ft_strjoin(dirs[i++], "/");
+//         path = ft_strjoin(tmp, cmd_base);
+//         free(tmp);
+//         if (path && access(path, X_OK) == 0)
+//             return (path);
+//         free(path);
+//         path = NULL;
+//     }
+//     if (cmd_base[0] == '/' && access(cmd_base, X_OK) == 0)
+//         return (printf("get_exe_path: '%s' -> NULL\n", cmd_base), ft_strdup(cmd_base));
+    
+//     return (NULL);
+// }
 char *get_exe_path(char **dirs, char *cmd_base)
 {
     int i;
     char *path;
     char *tmp;
 
+    // If absolute path, check it directly
+    if (cmd_base[0] == '/')
+    {
+        if (access(cmd_base, X_OK) == 0)
+            return (ft_strdup(cmd_base));
+        return (NULL);
+    }
+    // Otherwise, search PATH
     i = 0;
     path = NULL;
     while (dirs[i] && !path)
@@ -54,9 +85,7 @@ char *get_exe_path(char **dirs, char *cmd_base)
         free(path);
         path = NULL;
     }
-    if (!path)
-        return (ft_strdup(cmd_base));
-    return (path);
+    return (NULL);
 }
 
 void set_command_paths(char **paths, char *cmd1, char *cmd2, char **env)
