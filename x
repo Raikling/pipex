@@ -1,0 +1,16 @@
+ft_printf
+GNL
+infile.txt
+Libft
+Makefile
+pipex
+pipex.c
+pipex.h
+pipex.o
+pipex_utils_2.c
+pipex_utils_2.o
+pipex_utils_3.c
+pipex_utils_3.o
+pipex_utils.c
+pipex_utils.o
+x

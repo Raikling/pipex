@@ -39,7 +39,7 @@ void	free_string_array(char **arr);
 void	free_2d_array(char ***arr, int size);
 int		ft_check_args(t_pipex *pipex, char *file1, char *file2);
 char	***ft_parse_args(char *cmd1, char *cmd2);
-char	**ft_parse_cmds(char *cmd1, char *cmd2, char **env);
+char	**ft_parse_path(char *cmd1, char *cmd2, char **env);
 void	check_param(int ac);
 void	exe_child1(t_pipex *pipex, char **env);
 void	exe_child2(t_pipex *pipex, char **env);

@@ -1,8 +1,8 @@
 SRCS = pipex.c pipex_utils.c pipex_utils_2.c pipex_utils_3.c
 OBJ = $(SRCS:.c=.o) 
 NAME = pipex
-CC = gcc
-FLAGS = -Wall -Werror -Wextra
+CC = cc
+FLAGS = -Wall -Werror -Wextra -g
 AR = ar rcs
 RM = rm -rf
 PRINTF_DIR = ft_printf

@@ -68,6 +68,7 @@ void	exe_child1(t_pipex *pipex, char **env)
 	close(pipex->pipefds[1]);
 	execve(pipex->cmd_paths[0], pipex->cmd_args[0], env);
 	perror("Execve cmd 1");
+	ft_cleanup(pipex);
 	exit(EXIT_FAILURE);
 }
 
@@ -86,5 +87,6 @@ void	exe_child2(t_pipex *pipex, char **env)
 	close(pipex->pipefds[0]);
 	execve(pipex->cmd_paths[1], pipex->cmd_args[1], env);
 	perror("Execve cmd 2");
+	ft_cleanup(pipex);
 	exit(EXIT_FAILURE);
 }

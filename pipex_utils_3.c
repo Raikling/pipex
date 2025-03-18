@@ -47,31 +47,38 @@ char	*get_command_base(char *cmd)
 		return (ft_strdup(cmd));
 }
 
-char	*get_exe_path(char **dirs, char *cmd_base)
-{
-	int		i;
-	char	*path;
-	char	*tmp;
 
-	if (cmd_base[0] == '/')
+char *get_exe_path(char **dirs, char *cmd_base) 
+{
+    int i;
+    char *path;
+    char *tmp;
+
+    if (cmd_base[0] == '/') 
 	{
-		if (access(cmd_base, X_OK) == 0)
-			return (ft_strdup(cmd_base));
-		return (NULL);
-	}
-	i = 0;
-	path = NULL;
-	while (dirs[i] && !path)
+        if (access(cmd_base, X_OK) == 0)
+            return ft_strdup(cmd_base);
+        return NULL;
+    }
+    i = 0;
+    while (dirs[i]) 
 	{
-		tmp = ft_strjoin(dirs[i++], "/");
-		path = ft_strjoin(tmp, cmd_base);
-		free(tmp);
-		if (path && access(path, X_OK) == 0)
-			return (path);
-		free(path);
-		path = NULL;
-	}
-	return (NULL);
+        if (dirs[i][ft_strlen(dirs[i]) - 1] == '/') 
+            tmp = ft_strjoin(dirs[i], cmd_base);
+		else 
+		{
+            char *dir_with_slash = ft_strjoin(dirs[i], "/");
+            tmp = ft_strjoin(dir_with_slash, cmd_base);
+            free(dir_with_slash);
+        }
+        if (!tmp)
+            return NULL;
+        if (access(tmp, X_OK) == 0)
+            return (tmp);
+        free(tmp);
+        i++;
+    }
+    return (NULL);
 }
 
 void	set_command_paths(char **paths, char *cmd1, char *cmd2, char **env)
@@ -96,7 +103,7 @@ void	set_command_paths(char **paths, char *cmd1, char *cmd2, char **env)
 	free(cmd2_base);
 }
 
-char	**ft_parse_cmds(char *cmd1, char *cmd2, char **env)
+char	**ft_parse_path(char *cmd1, char *cmd2, char **env)
 {
 	char	**paths;
 
@@ -110,8 +117,15 @@ char	**ft_parse_cmds(char *cmd1, char *cmd2, char **env)
 	set_command_paths(paths, cmd1, cmd2, env);
 	if (!paths[0] || !paths[1])
 	{
-		free_string_array(paths);
+		// free_string_array(paths);
+		// return (NULL);
+		if (paths[0])
+			free(paths[0]);
+		if (paths[1])
+			free(paths[1]);
+		free(paths);
 		return (NULL);
 	}
 	return (paths);
 }
+
