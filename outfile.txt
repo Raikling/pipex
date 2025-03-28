@@ -34,3 +34,21 @@ drwxr-xr-x 1 raiklings raiklings  1880 Mar 28 10:33 Libft
 -rw-rw-r-- 1 raiklings raiklings  2238 Mar 28 10:33 pipex_utils.c
 -rw-r--r-- 1 raiklings raiklings  3128 Mar 28 10:33 pipex_utils.o
 -rw-r--r-- 1 raiklings raiklings   164 Mar 17 10:46 x
+total 76
+drwxr-xr-x 1 raiklings raiklings   412 Mar 28 10:49 ft_printf
+drwxr-xr-x 1 raiklings raiklings   240 Mar  9 06:43 GNL
+-rw-rw-r-- 1 raiklings raiklings    56 Mar  8 20:46 infile.txt
+drwxr-xr-x 1 raiklings raiklings  1880 Mar 28 10:49 Libft
+-rw-rw-r-- 1 raiklings raiklings   707 Mar 17 11:08 Makefile
+-rw-r--r-- 1 raiklings raiklings  2138 Mar 28 10:34 outfile.txt
+-rwxr-xr-x 1 raiklings raiklings 22304 Mar 28 10:49 pipex
+-rw-rw-r-- 1 raiklings raiklings  1733 Mar 28 10:49 pipex.c
+-rw-rw-r-- 1 raiklings raiklings  1709 Mar 18 11:09 pipex.h
+-rw-r--r-- 1 raiklings raiklings  3000 Mar 28 10:49 pipex.o
+-rw-rw-r-- 1 raiklings raiklings  2156 Mar 18 12:24 pipex_utils_2.c
+-rw-r--r-- 1 raiklings raiklings  3600 Mar 28 10:49 pipex_utils_2.o
+-rw-rw-r-- 1 raiklings raiklings  2905 Mar 28 10:33 pipex_utils_3.c
+-rw-r--r-- 1 raiklings raiklings  3896 Mar 28 10:49 pipex_utils_3.o
+-rw-rw-r-- 1 raiklings raiklings  2238 Mar 28 10:33 pipex_utils.c
+-rw-r--r-- 1 raiklings raiklings  3128 Mar 28 10:49 pipex_utils.o
+-rw-r--r-- 1 raiklings raiklings   164 Mar 17 10:46 x

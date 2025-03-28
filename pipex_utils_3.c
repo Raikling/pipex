@@ -113,8 +113,6 @@ char	**ft_parse_path(char *cmd1, char *cmd2, char **env)
 	set_command_paths(paths, cmd1, cmd2, env);
 	if (!paths[0] || !paths[1])
 	{
-		// free_string_array(paths);
-		// return (NULL);
 		if (paths[0])
 			free(paths[0]);
 		if (paths[1])
