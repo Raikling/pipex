@@ -57,3 +57,27 @@ int	ft_check_args(t_pipex *pipex, char *file1, char *file2)
 	}
 	return (0);
 }
+
+char	***ft_parse_args(char *cmd1, char *cmd2)
+{
+	char	***args;
+
+	args = malloc(3 * sizeof(char **));
+	if (!args)
+		return (NULL);
+	args[0] = ft_split(cmd1, ' ');
+	if (!args[0])
+	{
+		free(args);
+		return (NULL);
+	}
+	args[1] = ft_split(cmd2, ' ');
+	if (!args[1])
+	{
+		free_string_array(args[0]);
+		free(args);
+		return (NULL);
+	}
+	args[2] = NULL;
+	return (args);
+}

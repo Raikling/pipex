@@ -12,29 +12,7 @@
 
 #include "pipex.h"
 
-char	***ft_parse_args(char *cmd1, char *cmd2)
-{
-	char	***args;
 
-	args = malloc(3 * sizeof(char **));
-	if (!args)
-		return (NULL);
-	args[0] = ft_split(cmd1, ' ');
-	if (!args[0])
-	{
-		free(args);
-		return (NULL);
-	}
-	args[1] = ft_split(cmd2, ' ');
-	if (!args[1])
-	{
-		free_string_array(args[0]);
-		free(args);
-		return (NULL);
-	}
-	args[2] = NULL;
-	return (args);
-}
 
 char	*get_command_base(char *cmd)
 {
@@ -45,6 +23,31 @@ char	*get_command_base(char *cmd)
 		return (ft_substr(cmd, 0, space - cmd));
 	else
 		return (ft_strdup(cmd));
+}
+
+char *check_and_join_path(char *dir, char *cmd_base)
+{
+	char *tmp;
+	char *dir_with_slash;
+
+	if (dir[ft_strlen(dir) - 1] == '/') 
+    {
+        tmp = ft_strjoin(dir, cmd_base);
+    } 
+    else 
+    {
+        dir_with_slash = ft_strjoin(dir, "/");
+        if (!dir_with_slash)
+            return NULL;
+        tmp = ft_strjoin(dir_with_slash, cmd_base);
+        free(dir_with_slash);
+    }
+    if (!tmp)
+        return NULL;
+    if (access(tmp, X_OK) == 0)
+        return tmp;
+    free(tmp);
+    return (NULL);
 }
 
 
@@ -60,26 +63,19 @@ char *get_exe_path(char **dirs, char *cmd_base)
             return ft_strdup(cmd_base);
         return NULL;
     }
-    i = 0;
-    while (dirs[i]) 
+	i = 0;
+	while (dirs[i]) 
 	{
-        if (dirs[i][ft_strlen(dirs[i]) - 1] == '/') 
-            tmp = ft_strjoin(dirs[i], cmd_base);
-		else 
-		{
-            char *dir_with_slash = ft_strjoin(dirs[i], "/");
-            tmp = ft_strjoin(dir_with_slash, cmd_base);
-            free(dir_with_slash);
-        }
-        if (!tmp)
-            return NULL;
-        if (access(tmp, X_OK) == 0)
-            return (tmp);
-        free(tmp);
-        i++;
+		path = check_and_join_path(dirs[i], cmd_base);
+		if (path)
+			return (path);
+		i++;
     }
     return (NULL);
 }
+
+
+
 
 void	set_command_paths(char **paths, char *cmd1, char *cmd2, char **env)
 {
