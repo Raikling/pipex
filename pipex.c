@@ -15,9 +15,21 @@
 void fork_and_exe_children(t_pipex *pipex, char **env)
 {
 	pipex->pid1 = fork();
+	if (pipex->pid1 == -1)
+	{
+		perror("Fork 1");
+		ft_cleanup(pipex);
+		exit(EXIT_FAILURE);
+	}
 	if (pipex->pid1 == 0)
 		exe_child1(pipex, env);
 	pipex->pid2 = fork();
+	if (pipex->pid2 == -1)
+	{
+		perror("Fork 2");
+		ft_cleanup(pipex);
+		exit(EXIT_FAILURE);
+	}
 	if (pipex->pid2 == 0)
 		exe_child2(pipex, env);
 	ft_cleanup(pipex);

@@ -55,12 +55,6 @@ void	free_2d_array(char ***arr, int size)
 
 void	exe_child1(t_pipex *pipex, char **env)
 {
-	if (pipex->pid1 == -1)
-	{
-		perror("Fork 1");
-		ft_cleanup(pipex);
-		exit(EXIT_FAILURE);
-	}
 	close(pipex->pipefds[0]);
 	dup2(pipex->fd_in, STDIN_FILENO);
 	dup2(pipex->pipefds[1], STDOUT_FILENO);
@@ -74,12 +68,7 @@ void	exe_child1(t_pipex *pipex, char **env)
 
 void	exe_child2(t_pipex *pipex, char **env)
 {
-	if (pipex->pid2 == -1)
-	{
-		perror("Fork 2");
-		ft_cleanup(pipex);
-		exit(EXIT_FAILURE);
-	}
+	
 	close(pipex->pipefds[1]);
 	dup2(pipex->pipefds[0], STDIN_FILENO);
 	dup2(pipex->fd_out, STDOUT_FILENO);
